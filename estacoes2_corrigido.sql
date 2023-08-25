@@ -85,3 +85,76 @@ where p.codigo = es.pais and
 	  d.estacao = e.codigo and
 	  d.variavel=v.codigo
 order by data,hora,variavel;
+
+
+-- Instalando CrossTab
+CREATE EXTENSION IF NOT EXISTS tablefunc;
+
+-- Select com CrossTab
+SELECT * FROM crosstab(
+  'SELECT
+	 d.data + d.hora,
+     d.variavel,
+     d.valor
+   FROM 
+     dados d
+   ORDER BY 
+     d.data + d.hora, d.variavel'
+) AS ct (datahora timestamp, "Temperatura" text, "Chuva" text, "Direcao Vento" text, "Umidade" text, "Pressao" text);
+
+
+-- CrossTab full
+SELECT * FROM crosstab(
+  'SELECT 
+     e.codigo AS estacao_codigo,
+     e.descricao AS estacao_descricao,
+     e.latitude,
+     e.longitude,
+     o.descricao AS organizacao_descricao,
+     c.descricao AS cidade_descricao,
+     es.descricao AS estado_descricao,
+     p.descricao AS pais_descricao,
+     d.data,
+     d.hora,
+     v.descricao AS variavel_descricao,
+     d.valor
+   FROM 
+     estacoes e
+     JOIN cidades c ON e.cidade = c.codigo
+     JOIN estados es ON c.estado = es.codigo
+     JOIN paises p ON es.pais = p.codigo
+     JOIN organizacoes o ON e.organizacao = o.codigo
+     LEFT JOIN dados d ON e.codigo = d.estacao
+     LEFT JOIN variaveis v ON d.variavel = v.codigo
+   WHERE 
+     e.codigo IN (1, 2)  -- Filtra as estações desejadas
+   ORDER BY 
+     d.data, d.hora',
+  'SELECT DISTINCT v.descricao FROM variaveis v ORDER BY v.descricao'
+) AS ct (estacao_codigo int, estacao_descricao text, latitude double precision, longitude double precision, organizacao_descricao text, cidade_descricao text, estado_descricao text, pais_descricao text, data date, hora time, "Temperatura" text, "Chuva" text, "Direcao Vento" text, "Umidade" text, "Pressao" text);
+
+
+--
+SELECT * FROM crosstab(
+  'SELECT 
+	 d.data + d.hora,
+     e.codigo AS estacao_codigo,
+     e.descricao AS estacao_descricao,
+     e.latitude,
+     e.longitude,
+     o.descricao AS organizacao_descricao,
+     c.descricao AS cidade_descricao,
+     es.descricao AS estado_descricao,
+     p.descricao AS pais_descricao,
+	 d.variavel,
+     d.valor
+   FROM 
+     estacoes e
+     JOIN cidades c ON e.cidade = c.codigo
+     JOIN estados es ON c.estado = es.codigo
+     JOIN paises p ON es.pais = p.codigo
+     JOIN organizacoes o ON e.organizacao = o.codigo
+     LEFT JOIN dados d ON e.codigo = d.estacao
+   ORDER BY 
+     d.data + d.hora, d.variavel'
+) AS ct (datahora timestamp, estacao_codigo int, estacao_descricao text, latitude double precision, longitude double precision, organizacao_descricao text, cidade_descricao text, estado_descricao text, pais_descricao text, "Temperatura" text, "Chuva" text, "Direcao Vento" text, "Umidade" text, "Pressao" text);
