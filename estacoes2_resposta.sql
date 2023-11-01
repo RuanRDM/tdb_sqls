@@ -2,27 +2,27 @@
 CREATE TABLE paises (
     codigo integer NOT NULL PRIMARY KEY,
     descricao text NOT NULL
-);
+),
 
 -- Tabela de estados
 CREATE TABLE estados (
     codigo integer NOT NULL PRIMARY KEY,
     descricao text NOT NULL,
     pais integer NOT NULL REFERENCES paises(codigo)
-);
+),
 
 -- Tabela de cidades
 CREATE TABLE cidades (
     codigo integer NOT NULL PRIMARY KEY,
     descricao text NOT NULL,
     estado integer NOT NULL REFERENCES estados(codigo)
-);
+),
 
 -- Tabela de organizações
 CREATE TABLE organizacoes (
     codigo integer NOT NULL PRIMARY KEY,
     descricao text NOT NULL
-);
+),
 
 -- Tabela de estações
 CREATE TABLE estacoes (
@@ -32,7 +32,7 @@ CREATE TABLE estacoes (
     longitude double precision NOT NULL,
     cidade integer NOT NULL REFERENCES cidades(codigo),
     organizacao integer NOT NULL REFERENCES organizacoes(codigo)
-);
+),
 
 -- Tabela de variáveis
 CREATE TABLE variaveis (
@@ -40,7 +40,7 @@ CREATE TABLE variaveis (
     descricao text NOT NULL,
     tipo_dados integer NOT NULL,
     CHECK (tipo_dados IN (1, 2, 3, 4, 5))
-);
+),
 
 -- Tabela de dados
 CREATE TABLE dados (
@@ -50,47 +50,47 @@ CREATE TABLE dados (
     estacao integer NOT NULL REFERENCES estacoes(codigo),
     variavel integer NOT NULL REFERENCES variaveis(codigo),
     valor text NOT NULL
-);
+),
 
 -- Inserindo dados na tabela paises
 INSERT INTO paises (codigo, descricao) VALUES
 (1, 'Brasil'),
 (2, 'Estados Unidos'),
-(3, 'França');
+(3, 'França'),
 
 -- Inserindo dados na tabela estados
 INSERT INTO estados (codigo, descricao, pais) VALUES
 (1, 'São Paulo', 1),
 (2, 'Califórnia', 2),
-(3, 'Île-de-France', 3);
+(3, 'Île-de-France', 3),
 
 -- Inserindo dados na tabela cidades
 INSERT INTO cidades (codigo, descricao, estado) VALUES
 (1, 'São Paulo', 1),
 (2, 'Los Angeles', 2),
-(3, 'Paris', 3);
+(3, 'Paris', 3),
 
 -- Inserindo dados na tabela organizacoes
 INSERT INTO organizacoes (codigo, descricao) VALUES
 (1, 'Empresa A'),
-(2, 'Empresa B');
+(2, 'Empresa B'),
 
 -- Inserindo dados na tabela estacoes
 INSERT INTO estacoes (codigo, descricao, latitude, longitude, cidade, organizacao) VALUES
 (1, 'Estação 1', -23.550520, -46.633308, 1, 1),
-(2, 'Estação 2', 34.052235, -118.243683, 2, 2);
+(2, 'Estação 2', 34.052235, -118.243683, 2, 2),
 
 -- Inserindo dados na tabela variaveis
 INSERT INTO variaveis (codigo, descricao, tipo_dados) VALUES
 (1, 'Temperatura', 1),
 (2, 'Pressão', 2),
-(3, 'Umidade', 1);
+(3, 'Umidade', 1),
 
 -- Inserindo dados na tabela dados
 INSERT INTO dados (codigo, data, hora, estacao, variavel, valor) VALUES
 (1, '2023-08-23', '12:00:00', 1, 1, '25.5'),
 (2, '2023-08-23', '12:00:00', 2, 2, '1013'),
-(3, '2023-08-23', '12:00:00', 1, 3, '60');
+(3, '2023-08-23', '12:00:00', 1, 3, '60'),
 
 
 -- Select associando os dados climaticos com todos as tabelas
@@ -129,4 +129,7 @@ JOIN
 JOIN
     paises p ON es.pais = p.codigo
 JOIN
-    variaveis v ON d.variavel = v.codigo;
+    variaveis v ON d.variavel = v.codigo,
+
+
+
