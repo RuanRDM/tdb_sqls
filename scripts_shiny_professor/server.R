@@ -1,5 +1,5 @@
 library(shiny)
-setwd("C:/Users/20191pf.cc0202/Documents/tdb_sqls/scriptis_ui_professor")
+setwd("C:/Users/20191pf.cc0202/Documents/tdb_sqls/scripts_shiny_professor")
 source("functions.R")
 
 shinyServer(function(input, output) {
