@@ -6,18 +6,22 @@ elementos <- 10
 valorInicial <- 1
 valorFinal <- 30
 shinyUI(fluidPage(
-  titlePanel("Hello Shiny!"),
+  titlePanel("Hello Shiny ex02!"),
   sidebarLayout(
-    sidebarPanel(
+    sidebarPanel(    
       radioButtons("tipoPlot", "Tipo do Plot",
                    c("Ponto"="p", "Linha"="l")
-      ), 
+      ),       
       numericInput("elementos", "Numero de elementos", value = elementos),
       numericInput("valorInicial", "Valor Inicial", value = valorInicial),
       numericInput("valorFinal", "Valor Final", value = valorFinal)
-    ),
-    mainPanel(
-      plotOutput("saida")
+    ),     
+    mainPanel(      
+      tabsetPanel(type = "tabs", 
+                  tabPanel("Plot", plotOutput("saidaPlot")),                   
+                  tabPanel("Tabela", dataTableOutput("saidaTabela")),
+                  tabPanel("Mapa", dataTableOutput("saidaMapa"))
+      )            
     )
   )   
 ))
