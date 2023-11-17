@@ -6,7 +6,7 @@ elementos <- 10
 valorInicial <- 1
 valorFinal <- 30
 shinyUI(fluidPage(
-  titlePanel("Hello Shiny ex02!"),
+  titlePanel("Mapa - Passo Fundo"),
   sidebarLayout(
     sidebarPanel(    
       radioButtons("tipoPlot", "Tipo do Plot",
@@ -20,7 +20,7 @@ shinyUI(fluidPage(
       tabsetPanel(type = "tabs", 
                   tabPanel("Plot", plotOutput("saidaPlot")),                   
                   tabPanel("Tabela", dataTableOutput("saidaTabela")),
-                  tabPanel("Mapa", dataTableOutput("saidaMapa"))
+                  tabPanel("Mapa", leafletOutput("saidaMapa"))
       )            
     )
   )   

@@ -22,7 +22,12 @@ shinyServer(function(input, output) {
   })
 
   output$saidaMapa <- renderLeaflet({
-    a=gerarMapa()
-    a
+    dados <- gerarMapa()
+    mapa <- leaflet(data = dados) %>%
+      setView(lng = mean(dados$longitude), lat = mean(dados$latitude), zoom = 13) %>%
+      addTiles() %>%
+      addMarkers(lat = ~latitude, lng = ~longitude, popup = ~val)
+    mapa
   })  
 })
+
