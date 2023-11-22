@@ -1,10 +1,8 @@
 library(shiny)
-#setwd("/Users/alexandretagliarilazzaretti/Library/Mobile Documents/com~apple~CloudDocs/Lazzaretti/aulas/IFSUL/aulas/2023/2o Semestre/03-TBD/Linguagem R/Exemplos/exemplo1")
-#source("functions.R")
+library(shinyWidgets)
 #inicializando os valores
-elementos <- 10
-valorInicial <- 1
-valorFinal <- 30
+gid <- 109
+limit <- 100
 shinyUI(fluidPage(
   titlePanel("Mapa - Passo Fundo"),
   sidebarLayout(
@@ -12,16 +10,16 @@ shinyUI(fluidPage(
       radioButtons("tipoPlot", "Tipo do Plot",
                    c("Ponto"="p", "Linha"="l")
       ),       
-      numericInput("elementos", "Numero de elementos", value = elementos),
-      numericInput("valorInicial", "Valor Inicial", value = valorInicial),
-      numericInput("valorFinal", "Valor Final", value = valorFinal)
+      numericInput("gid", "GID", value = gid),
+      numericInput("limit", "LIMIT", value = limit)
     ),     
     mainPanel(      
-      tabsetPanel(type = "tabs", 
-                  tabPanel("Plot", plotOutput("saidaPlot")),                   
+      tabsetPanel(type = "tabs",                    
                   tabPanel("Tabela", dataTableOutput("saidaTabela")),
+                  tabPanel("Municipios", dataTableOutput("saidaMunicipios")),
                   tabPanel("Mapa", leafletOutput("saidaMapa"))
       )            
     )
   )   
-))
+)
+)

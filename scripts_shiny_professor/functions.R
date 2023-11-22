@@ -23,20 +23,24 @@ gerarDados_1<- function(elementos, valorInicial, valorFinal){
   df <- data.frame(y,x)
   return (df)
 }
-gerarMapa<- function(){
+gerarMapa<- function(gid,limit){
   # Execute uma consulta para obter os dados do banco de dados
-  query <- "SELECT
-    x,
-    y,
-    val,
-    ST_X(ST_Transform(geom, 4326))::numeric(10, 5) AS latitude,
-    ST_Y(ST_Transform(geom, 4326))::numeric(10, 5) AS longitude
+  query <- sprintf("SELECT x,y,val,st_X(geom) as longitude,st_Y(geom) as latitude
 FROM
 (select(st_pixelaspoints((    SELECT(ST_Union(ST_Clip(rast,
-ST_Transform((select geom from municipios where codigo=2),
-ST_SRID(rast) ) ) ) ) AS rast from state_raster	   
+ST_Transform((select geom from municipios_ibge where gid=%s),
+ST_SRID(rast) ) ) ) ) AS rast from state_raster2	   
 WHERE
-ST_Intersects(rast, (select geom from municipios where codigo=2))),1)).*) r1"
+ST_Intersects(rast, (select geom from municipios_ibge where gid=%s))),1)).*) r1
+LIMIT %s",gid,gid,limit)
+
+  dados <- executaConsulta(query)
+  return(dados)
+}
+gerarMunicipios<- function(gid,limit){
+  # Execute uma consulta para obter os dados do banco de dados
+  query <- "select gid,nome from municipios_ibge"
+
   dados <- executaConsulta(query)
   return(dados)
 }
