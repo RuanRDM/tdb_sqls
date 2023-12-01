@@ -22,7 +22,7 @@ shinyServer(function(input, output) {
     mapa <- leaflet(data = dados) %>%
       setView(lng = mean(dados$longitude), lat = mean(dados$latitude), zoom = 13) %>%
       addTiles() %>%
-      addCircleMarkers(lat = ~latitude, lng = ~longitude, label = ~val, radius = 5)
+      addMarkers(lat = ~latitude, lng = ~longitude, label = ~val)
     mapa
   })  
 })
