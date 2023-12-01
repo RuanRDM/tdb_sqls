@@ -1,5 +1,5 @@
 library(shiny)
-setwd("C:/Users/20191pf.cc0202/Documents/tdb_sqls/scripts_shiny_professor")
+setwd("C:/Users/20191pf.cc0202/Documents/tdb_sqls-1/scripts_shiny_professor")
 source("functions.R")
 shinyServer(function(input, output) {
       
@@ -9,20 +9,20 @@ shinyServer(function(input, output) {
   })
 
   output$saidaTabela <- renderDataTable({
-    gid <- input$gid
+    nome <- input$nome
     limit <- input$limit
-    dados <- gerarMapa(gid,limit) # chamada a fun????o dados
+    dados <- gerarMapa(nome,limit) # chamada a fun????o dados
     dados
   })
 
   output$saidaMapa <- renderLeaflet({
-    gid <- input$gid
+    nome <- input$nome
     limit <- input$limit
-    dados <- gerarMapa(gid,limit)
+    dados <- gerarMapa(nome,limit)
     mapa <- leaflet(data = dados) %>%
       setView(lng = mean(dados$longitude), lat = mean(dados$latitude), zoom = 13) %>%
       addTiles() %>%
-      addMarkers(lat = ~latitude, lng = ~longitude, popup = ~val)
+      addCircleMarkers(lat = ~latitude, lng = ~longitude, label = ~val, radius = 5)
     mapa
   })  
 })
